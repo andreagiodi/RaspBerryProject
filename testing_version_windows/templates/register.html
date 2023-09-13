@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Registrazione del Volto</title>
+</head>
+<body>
+    <h1>Registrazione del Volto</h1>
+    <form method="POST" action="/confirm-registration" enctype="multipart/form-data">
+        <label for="username">Nome Utente:</label>
+        <input type="text" name="username" required><br><br>
+        <label for="image">Carica un'immagine del tuo volto:</label>
+        <input type="file" name="image" accept="image/*" required><br><br>
+        <input type="submit" value="Registra Volto">
+    </form>
+</body>
+</html>
