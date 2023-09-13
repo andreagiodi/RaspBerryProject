@@ -1,6 +1,6 @@
 
 import cv2, sys, numpy, os
-haar_file = 'haarcascade_frontalface_default.xml'
+haar_file = './models/haarcascade_frontalface_default.xml'
 
 
 datasets = 'datasets'
