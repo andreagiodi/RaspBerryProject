@@ -20,7 +20,7 @@ def confirmreg():
     import numpy as np
     import os
 
-    haar_file = 'haarcascade_frontalface_default.xml'
+    haar_file = './models/haarcascade_frontalface_default.xml'
     datasets = 'datasets'
     sub_data = username
 
@@ -33,7 +33,7 @@ def confirmreg():
     face_cascade = cv2.CascadeClassifier(haar_file)
 
 # Carica un'immagine locale per la registrazione del volto
-    image_path = 'dwane1.jpg'
+    image_path = 'dwane.jpg'
     image = cv2.imread(image_path)
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
