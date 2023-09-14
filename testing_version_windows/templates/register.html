@@ -8,9 +8,38 @@
     <form method="POST" action="/confirm-registration" enctype="multipart/form-data">
         <label for="username">Nome Utente:</label>
         <input type="text" name="username" required><br><br>
-        <label for="image">Carica un'immagine del tuo volto:</label>
-        <input type="file" name="image" accept="image/*" required><br><br>
+        <div id="camera-feed">
+            <video id="video" width="400" height="300" autoplay></video>
+            <button id="capture-button" type="button">Scatta Foto</button>
+            <canvas id="canvas" width="400" height="300"></canvas>
+        </div>
+        <input type="hidden" name="userimg" id="userimg">
+        <br><br>
         <input type="submit" value="Registra Volto">
     </form>
+
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const captureButton = document.getElementById('capture-button');
+        const userimgInput = document.getElementById('userimg');
+
+        // Access the user's webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                video.srcObject = stream;
+            })
+            .catch(function (error) {
+                console.error('Errore nella cattura della webcam:', error);
+            });
+
+
+        captureButton.addEventListener('click', function () {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const userimgDataUrl = canvas.toDataURL('image/jpeg');
+            userimgInput.value = userimgDataUrl;
+        });
+    </script>
 </body>
 </html>

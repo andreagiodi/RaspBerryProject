@@ -6,7 +6,7 @@ haar_file = './models/haarcascade_frontalface_default.xml'
 datasets = 'datasets'
 
 
-sub_data = 'andrea_vero'	
+sub_data = 'nahim'	
 
 path = os.path.join(datasets, sub_data)
 if not os.path.isdir(path):
@@ -17,7 +17,7 @@ if not os.path.isdir(path):
 
 
 face_cascade = cv2.CascadeClassifier(haar_file)
-webcam = cv2.VideoCapture(0)
+webcam = cv2.VideoCapture(1)
 
 count = 1
 while count < 30:

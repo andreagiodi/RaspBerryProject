@@ -1,5 +1,10 @@
 from flask import Flask, render_template, request
-
+import cv2
+import numpy as np
+import os
+import base64
+from PIL import Image
+from io import BytesIO
 
 app = Flask(__name__)
 
@@ -15,10 +20,7 @@ def register():
 @app.route('/confirm-registration', methods=['POST'] )
 def confirmreg():
     username = request.form['username']
-
-    import cv2
-    import numpy as np
-    import os
+    base64image = request.form['userimg']
 
     haar_file = './models/haarcascade_frontalface_default.xml'
     datasets = 'datasets'
@@ -32,8 +34,15 @@ def confirmreg():
 
     face_cascade = cv2.CascadeClassifier(haar_file)
 
-# Carica un'immagine locale per la registrazione del volto
-    image_path = 'dwane.jpg'
+
+    #image_path = 'dwane.jpg'
+    #image = cv2.imread(image_path)
+    base64_data = base64image.split(',')[1]
+    image_data = base64.b64decode(base64_data)
+    image = Image.open(BytesIO(image_data))
+    image_path = "./temp/temp_image.jpg"
+    image.save(image_path)
+
     image = cv2.imread(image_path)
 
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
