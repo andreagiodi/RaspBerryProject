@@ -1,22 +1,228 @@
-<html>
-<body>
-<div class="jumbotron text-center">
+    <!DOCTYPE html>
+    <html lang="es" dir="ltr">
+      <head>
+        <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0">
+        <meta charset="utf-8">
+        <link rel="stylesheet" type="text/css" href="./static/style.css"><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;800&display=swap" rel="stylesheet">
+      </head>
+      <body>
+        {%if not logged%}
+        <div class="login-buttons">
+          <button class="login-button"  onclick="window.location.href='/login';">Login</button>
+          <button class="signup-button"  onclick="window.location.href='/new-account';">Registrati</button>
+        </div>
+        {%endif%}
+        <div class="main">
+          <div class="container a-container" id="a-container">
+            <form class="form" id="a-form" method="POST" action="/confirm-registration" enctype="multipart/form-data">
+              <br><br><br><br><br>
+              <div id="camera-feed">
+                <br>
+                <video id="video" width="400" height="250" autoplay></video>
+                <br>
+                <button id="capture-button" type="button">Scatta Foto</button>
+                <br>
+                <canvas id="canvas" width="400" height="270"></canvas>
+                <h1><b>PREVIEW</b></h1>
+              </div>
+              <input type="hidden" name="userimg" id="userimg">
+              <br><br>
+              <input type="submit" value="Registra Volto">
+              <button class="form__button button submit" ></button>
+            </form>
+          </div>
+          <div class="container b-container" id="b-container">
+            <form class="form" id="b-form" method="" action="">
+              <h2 class="form_title title">{{usernamerow}}</h2>
+              <span class="form__span"></span>
+              {%if not paying%}
+              <h2>NON PAGANTE</h2>
+              <img src="/static/assets/red.png" style="width: 50px; height: 50px;">
+              <button class="form__button button submit">PAGA ORA</button>
+              {%else%}
+              <h2>PAGANTE</h2>
+              <img src="/static/assets/green.png" style="width: 50px; height: 50px;">
+              <button class="form__button button submit">TERMINA ABBONAMENTO</button>
+              {%endif%}
+              
+            </form>
+          </div>
+          <div class="switch" id="switch-cnt">
+            <div class="switch__circle"></div>
+            <div class="switch__circle switch__circle--t"></div>
+            <div class="switch__container" id="switch-c1">
+              <h2 class="switch__title title">Registra Un</h2>
+              <h2 class="switch__title title"><b>Nuovo Volto</b></h2>
+              <br>
+              <br>
+              <p class="switch__description description">Consenti l'accesso alla webcam e procedi inserendo il tuo nome, infine scattati una foto in un ambiente luminoso senza presenza si altri volti nell'inquadratura</p>
+              {%if logged%}
+              <button class="switch__button button switch-btn">Il Mio Abbonamento</button>
+              {%endif%}
+            </div>
+            <div class="switch__container is-hidden" id="switch-c2">
+              <h2 class="switch__title title">Il Mio Abbonamento</h2>
+              <p class="switch__description description">Qui puoi visualizzare e rinnovare il tuo abbonamento</p>
+              <button class="switch__button button switch-btn">Registrazione Volto</button>
+              <button class="switch__button button switch-btn"  onclick="window.location.href='/clear';">LogOut</button>
+            </div>
+          </div>
+        </div>
+        
+      </body>
+    </html>
 
-  <div class="container">
+
+    <script>
+      const video = document.getElementById('video');
+      const canvas = document.getElementById('canvas');
+      const captureButton = document.getElementById('capture-button');
+      const userimgInput = document.getElementById('userimg');
+
+      // Access the user's webcam
+      navigator.mediaDevices.getUserMedia({ video: true })
+          .then(function (stream) {
+              video.srcObject = stream;
+          })
+          .catch(function (error) {
+              console.error('Errore nella cattura della webcam:', error);
+          });
+
+
+      captureButton.addEventListener('click', function () {
+          const context = canvas.getContext('2d');
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          const userimgDataUrl = canvas.toDataURL('image/jpeg');
+          userimgInput.value = userimgDataUrl;
+      });
+  </script>
+
+    <script>
+      /*
+        Designed by: SELECTO
+        Original image: https://dribbble.com/shots/5311359-Diprella-Login
+    */
+
+    let switchCtn = document.querySelector("#switch-cnt");
+    let switchC1 = document.querySelector("#switch-c1");
+    let switchC2 = document.querySelector("#switch-c2");
+    let switchCircle = document.querySelectorAll(".switch__circle");
+    let switchBtn = document.querySelectorAll(".switch-btn");
+    let aContainer = document.querySelector("#a-container");
+    let bContainer = document.querySelector("#b-container");
+    let allButtons = document.querySelectorAll(".submit");
+
+    let getButtons = (e) => e.preventDefault()
+
+    let changeForm = (e) => {
+
+        switchCtn.classList.add("is-gx");
+        setTimeout(function(){
+            switchCtn.classList.remove("is-gx");
+        }, 1500)
+
+        switchCtn.classList.toggle("is-txr");
+        switchCircle[0].classList.toggle("is-txr");
+        switchCircle[1].classList.toggle("is-txr");
+
+        switchC1.classList.toggle("is-hidden");
+        switchC2.classList.toggle("is-hidden");
+        aContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-txl");
+        bContainer.classList.toggle("is-z200");
+    }
+
+    let mainF = (e) => {
+        for (var i = 0; i < allButtons.length; i++)
+            allButtons[i].addEventListener("click", getButtons );
+        for (var i = 0; i < switchBtn.length; i++)
+            switchBtn[i].addEventListener("click", changeForm)
+    }
+
+    window.addEventListener("load", mainF);
+
+    </script>
+
     
-    <h1>Face Detection System</h1>
-    <p style="color:#888;">Based on Python and OpenCV</p>
-    
-  </div>
-</div>
-<div class="container"> 
-  <div class="row">
-    <div class="col-md-12 text-center">
-      <h2>Here We go !</h2>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-md-6 col-sm-6 col-xs-6"> <a href="/exec2" class="btn btn-sm animated-button victoria-one">Start Training the Model</a> </div>
-    <div class="col-md-6 col-sm-6 col-xs-6"> <a href="/exec" class="btn btn-sm animated-button victoria-two">Identify Me</a> </div> 
-</body>
-</html>
+  <style>
+    #camera-feed {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+  }
+
+  /* Stile per l'effetto di "glowing" attorno al video */
+  #video {
+    width: 50%;
+    max-width: 50%;
+    height: auto;
+    border-radius: 20px;
+    border: 2px solid rgb(255, 0, 0); 
+    box-shadow: 0 0 10px rgba(147, 0, 0, 0.7);
+
+  }
+  #canvas.visible-canvas {
+    display: block;
+  }
+
+  #canvas {
+    width: 50%;
+    max-width: 50%;
+    height: auto;
+    border-radius: 20px;
+    border: 2px solid rgb(255, 0, 0); /* Colore del bordo blu (puoi personalizzarlo) */
+    box-shadow: 0 0 10px rgba(147, 0, 0, 0.7); /* Effetto "glowing" blu */
+  }
+
+  #capture-button {
+  background-color: #007bff; /* Colore di sfondo del bottone */
+  color: #fff; /* Colore del testo del bottone */
+  padding: 10px 20px; /* Spaziatura interna del bottone */
+  border: none; /* Rimuove il bordo del bottone */
+  border-radius: 5px; /* Angoli arrotondati */
+  cursor: pointer; /* Cambia il cursore quando si passa sopra il bottone */
+}
+
+#capture-button:hover {
+  background-color: #0056b3; /* Cambia il colore di sfondo quando si passa sopra il bottone */
+}
+
+input[type="submit"] {
+  background-color: #28a745; /* Colore di sfondo del campo di input "Registra Volto" */
+  color: #fff; /* Colore del testo del campo di input "Registra Volto" */
+  padding: 10px 20px; /* Spaziatura interna del campo di input "Registra Volto" */
+  border: none; /* Rimuove il bordo del campo di input "Registra Volto" */
+  border-radius: 5px; /* Angoli arrotondati */
+  cursor: pointer; /* Cambia il cursore quando si passa sopra il campo di input "Registra Volto" */
+}
+
+input[type="submit"]:hover {
+  background-color: #1e7e34; /* Cambia il colore di sfondo quando si passa sopra il campo di input "Registra Volto" */
+}
+
+.login-buttons {
+  position: absolute;
+  top: 20px; /* Distanza dalla parte superiore */
+  right: 20px; /* Distanza dalla parte destra */
+}
+
+.login-button,
+.signup-button {
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px; /* Aggiunge uno spazio tra i bottoni */
+}
+
+.login-button:hover,
+.signup-button:hover {
+  background-color: #0056b3;
+}
+  
+  </style>

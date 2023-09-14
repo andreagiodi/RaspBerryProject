@@ -9,7 +9,7 @@ with open('./models/coco.names', 'r') as f:
     classes = f.read().strip().split('\n')
 
 # Leggi l'immagine locale
-image_path = 'dwane.jpg'  # Sostituisci con il percorso dell'immagine
+image_path = 'dwane1.jpg' 
 image = cv2.imread(image_path)
 
 # Definisci il colore e il font per il testo di output
