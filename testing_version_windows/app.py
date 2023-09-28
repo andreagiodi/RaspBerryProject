@@ -7,6 +7,8 @@ from PIL import Image
 from io import BytesIO
 import csv
 import uuid
+import mysql.connector
+import pandas as pd
 
 app = Flask(__name__)
 app.secret_key = '5F8AD21EC73BF96204A5E8739F10B628'
@@ -15,7 +17,7 @@ app.secret_key = '5F8AD21EC73BF96204A5E8739F10B628'
 def index():
     username = session.get('saved_username')
     password = session.get('saved_password')
-    logged = False  # Inizializza la variabile di bandiera
+    logged = False 
     usernamerow = ''
     paying = False
 
