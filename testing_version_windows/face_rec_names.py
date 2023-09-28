@@ -114,6 +114,6 @@ while True:
     if key == 27:
         break
 
-# Chiudi la finestra e rilascia la videocamera
+
 webcam.release()
 cv2.destroyAllWindows()

@@ -36,6 +36,45 @@ def index():
     
     return render_template('index.html', logged=logged, usernamerow=usernamerow, paying=paying)
 
+@app.route('/admin')
+def admin():
+    username = session.get('saved_username')
+    password = session.get('saved_password')
+    logged = False 
+    usernamerow = ''
+    paying = False
+    admin = False
+
+    if username and password:
+        with open('users.csv', mode='r', newline='') as file:
+            reader = csv.reader(file)
+            for row in reader:
+                if username.strip().lower() == row[1].strip().lower() and password == row[2]:
+                    logged = True
+                    if row[5] == 'True':
+
+
+                        admin = True
+                        csv_file = "users.csv"  
+                        user_data = pd.read_csv(csv_file, header=None)
+
+                        user_data.columns = ["id", "username", "password", "name", "surname", "admin", "status"]
+
+                        user_data = user_data.to_dict(orient='records')
+
+                        print(user_data)
+                    else:
+                        return redirect('/')
+                    
+                    break
+                
+    else:
+        return redirect('/')
+    
+    return render_template('admin-panel.html', logged=logged, usernamerow=usernamerow, paying=paying, isadmin=admin, user_data=user_data)
+
+
+
 @app.route('/home')
 def redirecthome():
     return redirect('/')
